@@ -9,12 +9,6 @@ var revealPoint = function(point) {
 
 var animatePoints = function(points) {
     forEach(points, revealPoint);
-
-    for (var i = 0; i < points.length; i++) {
-    revealPoint(i);
-    // CP23_DOM_Events_Attempt#1
-    // function forEAch.callback();
-    }
  };
 
 window.onload = function() {
