@@ -24,3 +24,4 @@ window.onload = function() {
        collectionContainer.innerHTML += collectionItemTemplate;
    }
 }
+//commenting for the sake of creating a new commit for CP24
