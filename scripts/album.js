@@ -39,15 +39,8 @@ var createSongRow = function(songNumber, songName, songLength) {
      ;
 
      return template;
- };
- ...
-     + '  <td class="song-item-title">' + songName + '</td>'
-     + '  <td class="song-item-duration">' + songLength + '</td>'
-     + '</tr>'
-     ;
-
-    return template;
 };
+
 var setCurrentAlbum = function(album) {
     // #1
     var albumTitle = document.getElementsByClassName('album-view-title')[0];
@@ -93,4 +86,3 @@ songListContainer.addEventListener('mouseover', function(event) {
             this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
         });
     }
-}
