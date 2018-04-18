@@ -41,12 +41,12 @@ var album90s= {
         { title: 'I Will Always Love You', duration: '4:31' },
         { title: "I'll Make Love To You", duration: '4:07'},
         { title: 'Macarena', duration: '3:51' },
-        { title: "Candle in the Wind '97", duration: '4:11'}
-        // { title: "End of Road", duration: '4:13'}
-        // { title: "The Boy Is Mine", duration: '4:54'}
-        // { title: "Smooth", duration: '4:56'}
-        // { title: "I Swear", duration: '3:43'}
-        // { title: "Un-break My Heart", duration: '4:32'}
+        { title: "Candle in the Wind '97", duration: '4:11'},
+        { title: "End of Road", duration: '4:13'},
+        { title: "The Boy Is Mine", duration: '4:54'},
+        { title: "Smooth", duration: '4:56'},
+        { title: "I Swear", duration: '3:43'},
+        { title: "Un-break My Heart", duration: '4:32'}
 
     ]
 };
