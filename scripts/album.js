@@ -84,5 +84,6 @@ songListContainer.addEventListener('mouseover', function(event) {
         songRows[i].addEventListener('mouseleave', function(event) {
             // Revert the content back to the number
             this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+            // console.log(this);
         });
     }
