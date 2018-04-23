@@ -71,7 +71,6 @@ var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></
 
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
-};
 songListContainer.addEventListener('mouseover', function(event) {
     // #1
     // console.log(event.target);
@@ -87,3 +86,4 @@ songListContainer.addEventListener('mouseover', function(event) {
             // console.log(this);
         });
     }
+};
