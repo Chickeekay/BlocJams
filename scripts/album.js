@@ -158,6 +158,20 @@ window.onload = function() {
         //   songItem.innerHTML !== songItemNumber;
         // }
     });
+<<<<<<< HEAD
+||||||| merged common ancestors
+>>>>>>>>> Temporary merge branch 2
+=======
+    songListContainer.addEventListener('mouseover', function(event) {
+      // #1
+      // console.log(event.target);
+      if (event.target.parentElement.className === 'album-view-song-item') {
+      // Change the content from the number to the play button's HTML
+      event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+      }
+    });
+
+>>>>>>> 7962aa88f2c8b6a24b0d14ab61667d3b4f4e10d2
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function(event) {
           // #1
