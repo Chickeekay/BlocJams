@@ -157,6 +157,15 @@ window.onload = function() {
         //   songItem.innerHTML !== songItemNumber;
         // }
     });
+    songListContainer.addEventListener('mouseover', function(event) {
+      // #1
+      // console.log(event.target);
+      if (event.target.parentElement.className === 'album-view-song-item') {
+      // Change the content from the number to the play button's HTML
+      event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+      }
+    });
+
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function(event) {
           // #1
