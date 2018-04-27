@@ -79,17 +79,23 @@ var setCurrentAlbum = function(album) {
 
 //https://github.com/Bloc/curriculum-public/blob/master/web-development/frontend/foundation/27-dom-scripting-play-pause-part-2/find-parent-by-class-name.js
 var findParentByClassName = function(element, targetClass) {
+    //Check if element exists
     if (element) {
+        //Define a variable named currentParent. Set equal to element.parentElement
         var currentParent = element.parentElement;
+        // Check if currentParent doesn't exist
+        if (!currentParent) {
+           //if it doesn't exist, do this.
+          console.log ("No parent found");
+        }
+        // Check if there's a currentParent element that doesn't have that certain className.
+        if (currentParent !== currentParent.className) {
+          //if there isn't, do this.
+          console.log ("No parent found with that class name");
+        }
         while (currentParent.className !== targetClass && currentParent.className !== null) {
         currentParent = currentParent.parentElement;
         return currentParent;
-
-        } else if (currentParent !== element.parentElement){
-            console.log ("No parent found");
-
-        } else if (currentParent !== currentParent.className){
-            console.log ("No parent found with that class name");
         }
     }
 };
@@ -164,20 +170,6 @@ window.onload = function() {
         //   songItem.innerHTML !== songItemNumber;
         // }
     });
-<<<<<<< HEAD
-||||||| merged common ancestors
->>>>>>>>> Temporary merge branch 2
-=======
-    songListContainer.addEventListener('mouseover', function(event) {
-      // #1
-      // console.log(event.target);
-      if (event.target.parentElement.className === 'album-view-song-item') {
-      // Change the content from the number to the play button's HTML
-      event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
-      }
-    });
-
->>>>>>> 7962aa88f2c8b6a24b0d14ab61667d3b4f4e10d2
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function(event) {
           // #1
