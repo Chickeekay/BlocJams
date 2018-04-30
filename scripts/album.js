@@ -79,12 +79,27 @@ var setCurrentAlbum = function(album) {
 
 //https://github.com/Bloc/curriculum-public/blob/master/web-development/frontend/foundation/27-dom-scripting-play-pause-part-2/find-parent-by-class-name.js
 var findParentByClassName = function(element, targetClass) {
+    //Check if element exists
     if (element) {
+        //Define a variable named currentParent. Set equal to element.parentElement
         var currentParent = element.parentElement;
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-            currentParent = currentParent.parentElement;
+        // Check if currentParent doesn't exist
+        if (!currentParent) {
+           //if it doesn't exist, console.log("No parent found")
+          console.log ("No parent found");
         }
+        // Check if there's a currentParent element that doesn't have that certain className.
+        if (currentParent !== currentParent.className) {
+          //if there isn't, console.log ("No parent found with that class name")
+          console.log ("No parent found with that class name");
+        }
+        //Also, while there is a currentParent with a certain className that doesn't have a targeClass and that same currentParent doesn't equal to null,
+        while (currentParent.className !== targetClass && currentParent.className !== null) {
+        // then the currentParent should be equal to currentParent with a certain parentElement
+        currentParent = currentParent.parentElement;
+        // if it is, then retun currentParent;
         return currentParent;
+        }
     }
 };
 
@@ -158,7 +173,6 @@ window.onload = function() {
         //   songItem.innerHTML !== songItemNumber;
         // }
     });
-
     for (var i = 0; i < songRows.length; i++) {
         songRows[i].addEventListener('mouseleave', function(event) {
           // #1
