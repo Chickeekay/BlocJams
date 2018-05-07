@@ -31,14 +31,56 @@ var albumMarconi = {
 };
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
-       '<tr class="album-view-song-item">'
-     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
-     + '  <td class="song-item-title">' + songName + '</td>'
-     + '  <td class="song-item-duration">' + songLength + '</td>'
-     + '</tr>'
-     ;
+      '<tr class="album-view-song-item">'
+    + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
+    + '  <td class="song-item-title">' + songName + '</td>'
+    + '  <td class="song-item-duration">' + songLength + '</td>'
+    + '</tr>'
+    ;
 
-     return $(template);
+    var $row = $(template);
+
+    var clickHandler = function() {
+      	var songNumber = $(this).attr('data-song-number');
+
+      	if (currentlyPlayingSong !== null) {
+        		// Revert to song number for currently playing song because user started playing new song.
+        		var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
+        		currentlyPlayingCell.html(currentlyPlayingSong);
+      	}
+      	if (currentlyPlayingSong !== songNumber) {
+        		// Switch from Play -> Pause button to indicate new song is playing.
+        		$(this).html(pauseButtonTemplate);
+        		currentlyPlayingSong = songNumber;
+      	} else if (currentlyPlayingSong === songNumber) {
+        		// Switch from Pause -> Play button to pause currently playing song.
+        		$(this).html(playButtonTemplate);
+        		currentlyPlayingSong = null;
+      	}
+    };
+
+    var onHover = function(event) {
+        var songNumberCell = $(this).find('.song-item-number');
+        var songNumber = songNumberCell.attr('data-song-number');
+
+        if (songNumber !== currentlyPlayingSong) {
+            songNumberCell.html(playButtonTemplate);
+        }
+    };
+
+    var offHover = function(event) {
+        var songNumberCell = $(this).find('.song-item-number');
+        var songNumber = songNumberCell.attr('data-song-number');
+
+        if (songNumber !== currentlyPlayingSong) {
+            songNumberCell.html(songNumber);
+        }
+    };
+
+    $row.find('.song-item-number').click(clickHandler);
+    $row.hover(onHover, offHover);
+
+    return  $row;
 };
 
 var setCurrentAlbum = function(album) {
@@ -65,128 +107,13 @@ var setCurrentAlbum = function(album) {
     }
 };
 
-// // CP27_DOM_PlayPauseP2 - findParentByClassName attempt #1
-// var findParentByClassName = function() {
-//   for (var i = 0; i >= className.length; i++){
-//     document.getElementsByClassName('.song-item-number');
-//   }, true;
-// };
-
-// // CP27_DOM_PlayPauseP2 - getSongItem attempt #1
-// var getSongItem = function (element) {
-//   // I don't get the whole 'based on that element's class name(s), use a switch statement that returns the element with the .song-item-number class.' I didn't even know there's a `switch` logic.
-//   return element(.song-item-number);
-// };
-
-//https://github.com/Bloc/curriculum-public/blob/master/web-development/frontend/foundation/27-dom-scripting-play-pause-part-2/find-parent-by-class-name.js
-var findParentByClassName = function(element, targetClass) {
-    //Check if element exists
-    if (element) {
-        //Define a variable named currentParent. Set equal to element.parentElement
-        var currentParent = element.parentElement;
-        // Check if currentParent doesn't exist
-        if (!currentParent) {
-           //if it doesn't exist, console.log("No parent found")
-          console.log ("No parent found");
-        }
-        // Check if there's a currentParent element that doesn't have that certain className.
-        if (currentParent !== currentParent.className) {
-          //if there isn't, console.log ("No parent found with that class name")
-          console.log ("No parent found with that class name");
-        }
-        //Also, while there is a currentParent with a certain className that doesn't have a targeClass and that same currentParent doesn't equal to null,
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-        // then the currentParent should be equal to currentParent with a certain parentElement
-        currentParent = currentParent.parentElement;
-        // if it is, then retun currentParent;
-        return currentParent;
-        }
-    }
-};
-
-//https://github.com/Bloc/curriculum-public/blob/master/web-development/frontend/foundation/27-dom-scripting-play-pause-part-2/get-song-item.js
-var getSongItem = function(element) {
-    switch (element.className) {
-        case 'album-song-button':
-        case 'ion-play':
-        case 'ion-pause':
-            return findParentByClassName(element, 'song-item-number');
-        case 'album-view-song-item':
-            return element.querySelector('.song-item-number');
-        case 'song-item-title':
-        case 'song-item-duration':
-            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
-        case 'song-item-number':
-            return element;
-        default:
-            return;
-    }
-};
-
-var clickHandler = function(targetElement) {
-    var songItem = getSongItem(targetElement);
-
-    if (currentlyPlayingSong === null) {
-    songItem.innerHTML = pauseButtonTemplate;
-    currentlyPlayingSong = songItem.getAttribute('data-song-number');
-
-    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
-    songItem.innerHTML = playButtonTemplate;
-    currentlyPlayingSong = null;
-
-    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
-    var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
-    currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
-    songItem.innerHTML = pauseButtonTemplate;
-    currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    }
-};
-
-var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
-var songRows = document.getElementsByClassName('album-view-song-item');
-
 // Album button templates
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 
- // Store state of playing songs
- var currentlyPlayingSong = null;
+// Store state of playing songs
+var currentlyPlayingSong = null;
 
-window.onload = function() {
+$(document).ready(function() {
     setCurrentAlbum(albumPicasso);
-    songListContainer.addEventListener('mouseover', function(event) {
-        // #1
-        // console.log(event.target);
-        if (event.target.parentElement.className === 'album-view-song-item') {
-          // https://github.com/Bloc/curriculum-public/blob/master/web-development/frontend/foundation/27-dom-scripting-play-pause-part-2/mouseover-behavior.js#L6-L11
-            var songItem = getSongItem(event.target);
-            if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
-            songItem.innerHTML = playButtonTemplate;
-            }
-        }
-        //Update `mouseover` code Attempt #1
-        // // #1
-        //
-        // var songItemNumber = songItem.getAttribute('data-song-number');
-        //
-        // // #2
-        // if (songItemNumber = currentlyPlayingSong) {
-        //   songItem.innerHTML !== songItemNumber;
-        // }
-    });
-    for (var i = 0; i < songRows.length; i++) {
-        songRows[i].addEventListener('mouseleave', function(event) {
-          // #1
-          var songItem = getSongItem(event.target);
-          var songItemNumber = songItem.getAttribute('data-song-number');
-
-          // #2
-          if (songItemNumber !== currentlyPlayingSong) {
-            songItem.innerHTML = songItemNumber;
-          }
-        });
-        songRows[i].addEventListener('click', function(event) {
-            clickHandler(event.target);
-        });
-    };
-};
+});
