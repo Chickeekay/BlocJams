@@ -18,7 +18,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     var $row = $(template);
     var onHover = function(event) {
-        var songNumberCell = $(this).querySelector('.song-item-number');
+        var songNumberCell = $(this).children('.song-item-number');
         var songNumber = songNumberCell.attr('data-song-number');
 
         if (songNumber !== currentlyPlayingSongNumber) {
@@ -27,7 +27,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     };
 
     var offHover = function(event) {
-        var songNumberCell = $(this).querySelector('.song-item-number');
+        var songNumberCell = $(this).children('.song-item-number');
         var songNumber = songNumberCell.attr('data-song-number');
         console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
         if (songNumber !== currentlyPlayingSongNumber) {
