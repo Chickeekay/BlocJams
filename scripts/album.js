@@ -86,7 +86,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     var offHover = function(event) {
         var songNumberCell = $(this).find('.song-item-number');
         var songNumber = songNumberCell.attr('data-song-number');
-        console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
+        // console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
         if (songNumber !== currentlyPlayingSongNumber) {
             songNumberCell.html(songNumber);
         }
@@ -130,6 +130,11 @@ var updateSeekBarWhileSongPlays = function() {
             var $seekBar = $('.seek-control .seek-bar');
 
             updateSeekPercentage($seekBar, seekBarFillRatio);
+
+/// ASSIGNMENT ATTEMPT part 1
+            // var setCurrentTimeInPlayerBar = function(currentTime){
+            //   $('.current-time').text(currentTime);
+            // }
         });
      }
  };
@@ -144,6 +149,8 @@ var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
     var percentageString = offsetXPercent + '%';
     $seekBar.find('.fill').width(percentageString);
     $seekBar.find('.thumb').css({left: percentageString});
+
+    va
 };
 
 var setupSeekBars = function() {
@@ -201,6 +208,11 @@ var updatePlayerBarSong = function() {
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+
+// ASSIGNMENT ATTEMPT part 2
+    // var setTotalTimeInPlayerBar = function(totalTime) {
+    //   $('total-time').text(songLength);
+    // }
 };
 
 var nextSong = function() {
@@ -299,5 +311,12 @@ $(document).ready(function() {
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
     $playButton.click(togglePlayFromPlayerBar);
-
 });
+
+// ASSIGNMENT ATTEMPT part 3
+// var filterTimeCode = function(timeInSeconds){
+//     var totalSongTime = parseFloat(timeInSeconds);
+//     var mintues = Math.floor(totalSongTime) / 60;
+//     var seconds = Math.floor(totalSongTime) % 60;
+//     return minutes + ":" + seconds;
+// };
