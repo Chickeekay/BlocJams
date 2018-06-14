@@ -259,6 +259,21 @@ var previousSong = function() {
     $lastSongNumberCell.html(lastSongNumber);
 };
 
+var togglePlayFromPlayerBar = function() {
+    var $currentSong = getSongNumberCell(currentlyPlayingSongNumber);
+  	if(currentSoundFile) {
+    		if(currentSoundFile.isPaused()) {
+      			$currentSong.html(pauseButtonTemplate);
+      			$(this).html(playerBarPauseButton);
+      			currentSoundFile.play();
+    		} else {
+      			$currentSong.html(playButtonTemplate);
+      			$(this).html(playerBarPlayButton);
+      			currentSoundFile.pause();
+    		}
+  	}
+};
+
 // Album button templates
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -277,22 +292,6 @@ var $nextButton = $('.main-controls .next');
 var $playButton = $('.main-controls .play-pause');
 
 var songNumber = parseInt($(this).attr('data-song-number'));
-
-var togglePlayFromPlayerBar = function() {
-    var $currentSong = getSongNumberCell(currentlyPlayingSongNumber);
-  	if(currentSoundFile) {
-    		if(currentSoundFile.isPaused()) {
-      			$currentSong.html(pauseButtonTemplate);
-      			$(this).html(playerBarPauseButton);
-      			currentSoundFile.play();
-    		} else {
-      			$currentSong.html(playButtonTemplate);
-      			$(this).html(playerBarPlayButton);
-      			currentSoundFile.pause();
-    		}
-  	}
-};
-
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
