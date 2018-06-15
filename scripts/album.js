@@ -34,7 +34,7 @@ var createSongRow = function(songNumber, songName, songLength) {
       '<tr class="album-view-song-item">'
     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + '  <td class="song-item-title">' + songName + '</td>'
-    + '  <td class="song-item-duration">' + songLength + '</td>'
+    + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>'
     ;
 
@@ -58,14 +58,19 @@ var createSongRow = function(songNumber, songName, songLength) {
             updatePlayerBarSong();
             var $volumeFill = $('.volume .fill');
             var $volumeThumb = $('.volume .thumb');
-            $volumeFill.width(currentVolume + '%');
+            $volumeFillf.width(currentVolume + '%');
             $volumeThumb.css({left: currentVolume + '%'});
+
+            $(this).html(pauseButtonTemplate);
+            updatePlayerBarSong();
 
       	} else if (currentlyPlayingSongNumber === songNumber) {
               if (currentSoundFile.isPaused()) {
                   $(this).html(pauseButtonTemplate);
                   $('.main-controls .play-pause').html(playerBarPauseButton);
                   currentSoundFile.play();
+                  updateSeekBarWhileSongPlays();
+
               } else {
                   $(this).html(playButtonTemplate);
                   $('.main-controls .play-pause').html(playerBarPlayButton);
@@ -126,15 +131,15 @@ var updateSeekBarWhileSongPlays = function() {
          // #10
         currentSoundFile.bind('timeupdate', function(event) {
              // #11
+
+            var currentTime = this.getTime();
+            var songLength = this.getDuration();
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
 
             updateSeekPercentage($seekBar, seekBarFillRatio);
-
-/// ASSIGNMENT ATTEMPT part 1
-            // var setCurrentTimeInPlayerBar = function(currentTime){
-            //   $('.current-time').text(currentTime);
-            // }
+            //Timer went to 00
+            setCurrentTimeInPlayerBar(filterTimeCode(currentTime));
         });
      }
  };
@@ -150,7 +155,6 @@ var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
     $seekBar.find('.fill').width(percentageString);
     $seekBar.find('.thumb').css({left: percentageString});
 
-    va
 };
 
 var setupSeekBars = function() {
@@ -181,6 +185,7 @@ var setupSeekBars = function() {
             var offsetX = event.pageX - $seekBar.offset().left;
             var barWidth = $seekBar.width();
             var seekBarFillRatio = offsetX / barWidth;
+
             if ($seekBar.parent().attr('class') == 'seek-control') {
                 seek(seekBarFillRatio * currentSoundFile.getDuration());
             } else {
@@ -208,11 +213,8 @@ var updatePlayerBarSong = function() {
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
-
-// ASSIGNMENT ATTEMPT part 2
-    // var setTotalTimeInPlayerBar = function(totalTime) {
-    //   $('total-time').text(songLength);
-    // }
+    // Changed end time
+    setTotalTimeInPlayer(filterTimeCode(currentSongFromAlbum.duration));
 };
 
 var nextSong = function() {
@@ -231,6 +233,7 @@ var nextSong = function() {
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
     updateSeekBarWhileSongPlays();
+    //This was removed
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
     // Update the Player Bar information
     updatePlayerBarSong();
@@ -271,6 +274,7 @@ var previousSong = function() {
     $lastSongNumberCell.html(lastSongNumber);
 };
 
+//Where is this?
 var togglePlayFromPlayerBar = function() {
     var $currentSong = getSongNumberCell(currentlyPlayingSongNumber);
   	if(currentSoundFile) {
@@ -301,6 +305,7 @@ var currentSoundFile = null;
 var currentVolume = 80;
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
+//Where is this?
 var $playButton = $('.main-controls .play-pause');
 
 var songNumber = parseInt($(this).attr('data-song-number'));
@@ -313,10 +318,54 @@ $(document).ready(function() {
     $playButton.click(togglePlayFromPlayerBar);
 });
 
-// ASSIGNMENT ATTEMPT part 3
+// // ASSIGNMENT ATTEMPT part 1
+// var setCurrentTimeInPlayerBar = function(currentTime){
+//   // This line below is something I don't understand yet
+//   var $currentTimeElement = $('.seek-control .current-time');
+//   $('.current-time').text(currentTime);
+// }
+//
+// // ASSIGNMENT ATTEMPT part 2
+// var setTotalTimeInPlayerBar = function(totalTime) {
+//   // This line below is something I don't understand yet
+//   var $totalTimeElement = $('.seek-control .total-time');
+//   $('total-time').text(songLength);
+// }
+//
+// // ASSIGNMENT ATTEMPT part 3
 // var filterTimeCode = function(timeInSeconds){
-//     var totalSongTime = parseFloat(timeInSeconds);
-//     var mintues = Math.floor(totalSongTime) / 60;
-//     var seconds = Math.floor(totalSongTime) % 60;
+//   //How does 'Number' work in this sense?
+//     var totalSongTime = Number.parseFloat(timeInSeconds);
+//     var minutes = Math.floor(totalSongTime) / 60;
+//     var seconds = Math.floor(minutes) % 60;
 //     return minutes + ":" + seconds;
 // };
+
+//COPIED ASSIGNMENT from https://github.com/amydevoogd/bloc-jams/blob/assignment-33-seek-bars/scripts/album.js
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    var $currentTimeElement = $('.seek-control .current-time');
+    $currentTimeElement.text(currentTime);
+};
+
+var setTotalTimeInPlayer = function(totalTime) {
+    var $totalTimeElement = $('.seek-control .total-time');
+    $totalTimeElement.text(totalTime);
+};
+
+var filterTimeCode = function(timeInSeconds) {
+
+    var totalSeconds = Number.parseFloat(timeInSeconds);
+    var wholeSeconds = Math.floor(totalSeconds);
+    var minutes = Math.floor(wholeSeconds / 60);
+
+    var remainingSeconds = wholeSeconds % 60;
+    var output = minutes + ':';
+
+    if (remainingSeconds < 10) {
+        output += '0';
+    }
+
+    output += remainingSeconds;
+
+    return output;
+};

@@ -1,15 +1,15 @@
 var albumPicasso = {
-    title: 'The Colors',
-    artist: 'Pablo Picasso',
-    label: 'Cubism',
-    year: '1881',
-    albumArtUrl: 'assets/images/album_covers/01.png',
+    title: 'Onward',
+    artist: 'Various Artists',
+    label: 'Chickee',
+    year: '2018',
+    albumArtUrl: 'assets/images/album_covers/Onward.png',
     songs: [
-        { title: 'Blue', duration: 161.71, audioUrl: 'assets/music/blue1' },
-        { title: 'Green', duration: 10, audioUrl: 'assets/music/green1' },
-        { title: 'Red', duration: 15, audioUrl: 'assets/music/red1' },
-        { title: 'Pink', duration: 20, audioUrl: 'assets/music/pink1' },
-        { title: 'Magenta', duration: 25, audioUrl: 'assets/music/magenta1' }
+        { title: 'Go The Distance', duration: 280, audioUrl: 'assets/music/Go The Distance' },
+        { title: 'Defying Gravity', duration: 226, audioUrl: 'assets/music/Defying Gravity' },
+        { title: 'Unwritten', duration: 227, audioUrl: 'assets/music/Unwritten' },
+        { title: 'You Gotta Be', duration: 244, audioUrl: 'assets/music/You Gotta Be' },
+        { title: 'Tubthumping', duration: 212, audioUrl: 'assets/music/Tubthumping' }
     ]
 };
 

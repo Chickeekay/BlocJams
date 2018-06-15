@@ -1,12 +1,12 @@
 var buildCollectionItemTemplate = function() {
     var template =
      '<div class="collection-album-container column fourth">'
-   + '  <img src="assets/images/album_covers/01.png"/>'
+   + '  <img src="assets/images/album_covers/Onward.png"/>'
    + '  <div class="collection-album-info caption">'
    + '    <p>'
-   + '      <a class="album-name" href="album.html"> The Colors </a>'
+   + '      <a class="album-name" href="album.html"> Onward </a>'
    + '      <br/>'
-   + '      <a href="album.html"> Pablo Picasso </a>'
+   + '      <a href="album.html"> Various Artists </a>'
    + '      <br/>'
    + '      X songs'
    + '      <br/>'
