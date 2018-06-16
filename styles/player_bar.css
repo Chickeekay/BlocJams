@@ -156,6 +156,7 @@
     .player-bar {
         padding: 1rem;
         background-color: rgba(0,0,0,0.6);
+        height: 150px;
     }
 
     .player-bar .main-controls,

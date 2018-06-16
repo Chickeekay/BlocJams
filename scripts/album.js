@@ -58,7 +58,7 @@ var createSongRow = function(songNumber, songName, songLength) {
             updatePlayerBarSong();
             var $volumeFill = $('.volume .fill');
             var $volumeThumb = $('.volume .thumb');
-            $volumeFillf.width(currentVolume + '%');
+            $volumeFill.width(currentVolume + '%');
             $volumeThumb.css({left: currentVolume + '%'});
 
             $(this).html(pauseButtonTemplate);
@@ -99,7 +99,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     $row.find('.song-item-number').click(clickHandler);
     $row.hover(onHover, offHover);
-
+console.log({pauseButtonTemplate});
     return  $row;
 };
 
@@ -140,6 +140,14 @@ var updateSeekBarWhileSongPlays = function() {
             updateSeekPercentage($seekBar, seekBarFillRatio);
             //Timer went to 00
             setCurrentTimeInPlayerBar(filterTimeCode(currentTime));
+            //Autoplay of nextSong (Borrowed from https://github.com/jaysalvat/buzz/blob/master/src/buzz.js)
+            if (currentSoundFile.isEnded()) {
+                // "I prefer that my playlist loops back to the start when it reaches the last song thus I commented out the code below and directly call the next song."
+                // if (currentlyPlayingSongNumber < currentAlbum.songs.length) {
+                //
+                // }
+                nextSong();
+            }
         });
      }
  };
@@ -318,33 +326,11 @@ $(document).ready(function() {
     $playButton.click(togglePlayFromPlayerBar);
 });
 
-// // ASSIGNMENT ATTEMPT part 1
-// var setCurrentTimeInPlayerBar = function(currentTime){
-//   // This line below is something I don't understand yet
-//   var $currentTimeElement = $('.seek-control .current-time');
-//   $('.current-time').text(currentTime);
-// }
-//
-// // ASSIGNMENT ATTEMPT part 2
-// var setTotalTimeInPlayerBar = function(totalTime) {
-//   // This line below is something I don't understand yet
-//   var $totalTimeElement = $('.seek-control .total-time');
-//   $('total-time').text(songLength);
-// }
-//
-// // ASSIGNMENT ATTEMPT part 3
-// var filterTimeCode = function(timeInSeconds){
-//   //How does 'Number' work in this sense?
-//     var totalSongTime = Number.parseFloat(timeInSeconds);
-//     var minutes = Math.floor(totalSongTime) / 60;
-//     var seconds = Math.floor(minutes) % 60;
-//     return minutes + ":" + seconds;
-// };
-
 //COPIED ASSIGNMENT from https://github.com/amydevoogd/bloc-jams/blob/assignment-33-seek-bars/scripts/album.js
 var setCurrentTimeInPlayerBar = function(currentTime) {
     var $currentTimeElement = $('.seek-control .current-time');
     $currentTimeElement.text(currentTime);
+    console.log($currentTimeElement);
 };
 
 var setTotalTimeInPlayer = function(totalTime) {
@@ -369,3 +355,22 @@ var filterTimeCode = function(timeInSeconds) {
 
     return output;
 };
+
+// // ASSIGNMENT ATTEMPT part 1
+// var setCurrentTimeInPlayerBar = function(currentTime){
+//   $('.current-time').text(currentTime);
+// }
+//
+// // ASSIGNMENT ATTEMPT part 2
+// var setTotalTimeInPlayerBar = function(totalTime) {
+//   $('total-time').text(songLength);
+// }
+//
+// // ASSIGNMENT ATTEMPT part 3
+// var filterTimeCode = function(timeInSeconds){
+//   //How does 'Number' work in this sense?
+//     var totalSongTime = Number.parseFloat(timeInSeconds);
+//     var minutes = Math.floor(totalSongTime) / 60;
+//     var seconds = Math.floor(minutes) % 60;
+//     return minutes + ":" + seconds;
+// };
