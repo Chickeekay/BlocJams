@@ -1,4 +1,3 @@
-// Store state of playing songs
 var currentlyPlayingSong = null;
 var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
@@ -182,7 +181,7 @@ var updateSeekBarWhileSongPlays = function() {
             updateSeekPercentage($seekBar, seekBarFillRatio);
             //Timer went to 00
             setCurrentTimeInPlayerBar(filterTimeCode(currentTime));
-            //Autoplay of nextSong (Borrowed from https://github.com/jaysalvat/buzz/blob/master/src/buzz.js)
+            //Autoplay of nextSong (Borrowed from https://github.com/jeffminnear/bloc-jams/commit/ec4d9f24ee3209e17957412593831e3e2d184da8)
             if (currentSoundFile.isEnded()) {
                 // "I prefer that my playlist loops back to the start when it reaches the last song thus I commented out the code below and directly call the next song."
                 // if (currentlyPlayingSongNumber < currentAlbum.songs.length) {
