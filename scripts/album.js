@@ -1,3 +1,30 @@
+// Store state of playing songs
+var currentlyPlayingSong = null;
+var currentAlbum = null;
+var currentlyPlayingSongNumber = null;
+var currentSongFromAlbum = null;
+var currentSoundFile = null;
+var currentVolume = 100;
+
+// Album button templates
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+var playerBarPlayButton = '<span class="ion-play"></span>';
+var playerBarPauseButton = '<span class="ion-pause"></span>';
+
+//jQuery variables
+var $previousButton = $('.main-controls .previous');
+var $nextButton = $('.main-controls .next');
+//amydevoogd didn't use this in her code.
+var $playButton = $('.main-controls .play-pause');
+//Took these 2 out of their local environments.
+// var $currentTimeElement = $('.seek-control .current-time');
+// var $totalTimeElement = $('.seek-control .total-time');
+
+
+var songNumber = parseInt($(this).attr('data-song-number'));
+console.log(this);
+
 var setSong = function(songNumber){
     if (currentSoundFile) {
         currentSoundFile.stop();
@@ -18,7 +45,7 @@ var seek = function(time) {
         currentSoundFile.setTime(time);
     }
 }
-
+// Cannot figure out why the volume goes down when the thumb is dragged all the way to the end, but not when clicked.
 var setVolume = function(volume) {
     if (currentSoundFile) {
         currentSoundFile.setVolume(volume);
@@ -41,8 +68,11 @@ var createSongRow = function(songNumber, songName, songLength) {
     var $row = $(template);
 
     var clickHandler = function() {
+      //Why do I have to decleare this again when I have a similar var on line 25?
+      // Is it because the 'this' in this case is referring to clickHandler instead of the window?
+      // No, it's not. It's actually pointing to line 62 <td class..songNumber..>. How?
       	var songNumber = $(this).attr('data-song-number');
-
+console.log(this);
       	if (currentlyPlayingSongNumber !== null) {
         		// Revert to song number for currently playing song because user started playing new song.
         		var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
@@ -67,6 +97,7 @@ var createSongRow = function(songNumber, songName, songLength) {
       	} else if (currentlyPlayingSongNumber === songNumber) {
               if (currentSoundFile.isPaused()) {
                   $(this).html(pauseButtonTemplate);
+                  // Same principle as line 71. Why can't I use '$playButton' below when I already have a var for it on line 19.
                   $('.main-controls .play-pause').html(playerBarPauseButton);
                   currentSoundFile.play();
                   updateSeekBarWhileSongPlays();
@@ -80,7 +111,18 @@ var createSongRow = function(songNumber, songName, songLength) {
     };
 
     var onHover = function(event) {
+      //This lines from 'var songNumberCell' and 'var songNumber' is so beyond my understanding
+      //1st I can't figure how '.find' points out to line 61 '<tr class="album-view-song-item">' when '.find()' is supposed to look for descendants and not parents. https://api.jquery.com/find/
+      //2nd songNumberCell.attr made it even more confusing as I was expecting songNumberCell points to line 61. But then data-song-nubmer is on line 62. http://api.jquery.com/attr/
+
+      //Is it because neither are pointing to line 61 or 62, both are pointing to line 60 'var template'- the var that holds all the html elements.
+
+      //If that's the case it makes sense that the console.log (this) printed "album-view-song-item" upon '.find' because it is a descendants of 'var template'. But what's is the relation of the '.song-item-number' in this equation?
+
+
+// How to read this 2 succeeding lines?
         var songNumberCell = $(this).find('.song-item-number');
+        console.log(this);
         var songNumber = songNumberCell.attr('data-song-number');
 
         if (songNumber !== currentlyPlayingSongNumber) {
@@ -99,7 +141,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     $row.find('.song-item-number').click(clickHandler);
     $row.hover(onHover, offHover);
-console.log({pauseButtonTemplate});
+
     return  $row;
 };
 
@@ -298,26 +340,6 @@ var togglePlayFromPlayerBar = function() {
   	}
 };
 
-// Album button templates
-var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
-var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
-var playerBarPlayButton = '<span class="ion-play"></span>';
-var playerBarPauseButton = '<span class="ion-pause"></span>';
-
-// Store state of playing songs
-var currentlyPlayingSong = null;
-var currentAlbum = null;
-var currentlyPlayingSongNumber = null;
-var currentSongFromAlbum = null;
-var currentSoundFile = null;
-var currentVolume = 80;
-var $previousButton = $('.main-controls .previous');
-var $nextButton = $('.main-controls .next');
-//Where is this?
-var $playButton = $('.main-controls .play-pause');
-
-var songNumber = parseInt($(this).attr('data-song-number'));
-
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
     setupSeekBars();
@@ -328,30 +350,35 @@ $(document).ready(function() {
 
 //COPIED ASSIGNMENT from https://github.com/amydevoogd/bloc-jams/blob/assignment-33-seek-bars/scripts/album.js
 var setCurrentTimeInPlayerBar = function(currentTime) {
+  //1) Why do I have to include the '.seek-control' into the equation?
+  // Answer: Not necessary but it is just more specific.
+  //2) Is this better off put in or outside the function? What are the circumstances where a var is better off put into the global enviroment?
     var $currentTimeElement = $('.seek-control .current-time');
     $currentTimeElement.text(currentTime);
-    console.log($currentTimeElement);
 };
 
 var setTotalTimeInPlayer = function(totalTime) {
-    var $totalTimeElement = $('.seek-control .total-time');
+  var $totalTimeElement = $('.seek-control .total-time');
     $totalTimeElement.text(totalTime);
 };
 
 var filterTimeCode = function(timeInSeconds) {
-
+// Does it really need the 'Number' here? I don't see any difference with or without it. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number
     var totalSeconds = Number.parseFloat(timeInSeconds);
     var wholeSeconds = Math.floor(totalSeconds);
-    var minutes = Math.floor(wholeSeconds / 60);
+    var minutes = Math.floor(wholeSeconds / 60);//4 (Song #4 You Gotta Be)
 
-    var remainingSeconds = wholeSeconds % 60;
-    var output = minutes + ':';
+    var remainingSeconds = wholeSeconds % 60;//4
+
+    //I don't understand the logic in this.
+    // Answer: https://stackoverflow.com/questions/25152695/what-does-mean-in-javascript
+    var output = minutes + ':';//"4:"
 
     if (remainingSeconds < 10) {
-        output += '0';
+        output += '0';//"4:0"
     }
 
-    output += remainingSeconds;
+    output += remainingSeconds;//"4:04"
 
     return output;
 };
@@ -368,7 +395,7 @@ var filterTimeCode = function(timeInSeconds) {
 //
 // // ASSIGNMENT ATTEMPT part 3
 // var filterTimeCode = function(timeInSeconds){
-//   //How does 'Number' work in this sense?
+//      //How does 'Number' work in this sense?
 //     var totalSongTime = Number.parseFloat(timeInSeconds);
 //     var minutes = Math.floor(totalSongTime) / 60;
 //     var seconds = Math.floor(minutes) % 60;
