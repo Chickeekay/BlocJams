@@ -1,3 +1,10 @@
-# bloc-jams
+# Bloc Jams
+### https://chickeekay.github.io/bloc-jams/
 
-This is a project from my UX Design program with Bloc. Javascript is the focus of this project.
+Bloc Jams is a digital music player like Spotify.
+
+-------------
+
+This is a school project.
+
+We were already given a layout to follow and we were tasked code it via HTML, CSS & Javacript
